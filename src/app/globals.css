@@ -165,3 +165,66 @@
 .bg-gradient-stats {
   background: linear-gradient(270deg, #e8e8ff 0%, #ffffff 100%);
 }
+
+.metallic-text {
+  background: linear-gradient(
+    90deg,
+    #b5b5b5 0%,
+    #8c8c8c 12%,
+    #b5b5b5 27%,
+    #6f6f6f 41%,
+    #c4c4c4 57%,
+    #7a7a7a 72%,
+    #bdbdbd 86%,
+    #676767 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  filter: brightness(1.05) contrast(1.2);
+}
+
+.gold-text {
+  background: linear-gradient(
+    90deg,
+    #dca21b 0%,
+    #dca91d 12%,
+    #b87e0f 24%,
+    #dca91d 38%,
+    #b87e0f 52%,
+    #dca91d 66%,
+    #dca21b 82%,
+    #a86a0c 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  filter: brightness(1.15) contrast(1.3);
+}
+
+.orange-metallic {
+  background: linear-gradient(
+    90deg,
+    #f97619 0%,
+    #fc9145 12%,
+    #e1650b 24%,
+    #fc9145 38%,
+    #e1650b 52%,
+    #fc9145 66%,
+    #f97619 82%,
+    #e2650c 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  /* Metallic shine */
+  filter: brightness(1.15) contrast(1.3);
+}

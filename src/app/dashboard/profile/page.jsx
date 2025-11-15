@@ -1,8 +1,13 @@
 "use client";
+import { useState } from "react";
 import React from "react";
 import Image from "next/image";
+import EditProfileModal from "@/components/profile/EditProfileModal";
+import SuccessModal from "@/components/settings/modals/SuccessModal";
 
 const Profile = () => {
+  const [openEditProfile, setOpenEditProfile] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
   const galleryImages = Array(12).fill("/images/lounge.jfif"); // Replace with real images later
   const locations = [
     {
@@ -51,7 +56,15 @@ const Profile = () => {
     <div className="w-full bg-gray-50 p-6 space-y-6 overflow-auto">
       {/* Business Details */}
       <section className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-xl font-semibold mb-4">Business Details</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Business Details</h2>
+          <button
+            onClick={() => setOpenEditProfile(true)}
+            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+          >
+            Edit
+          </button>
+        </div>
 
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 rounded-full overflow-hidden">
@@ -138,11 +151,13 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col h-[450px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Gallery</h2>
-            <button className="text-black underline font-medium hover:underline">
-              Add New Images
+            <button
+              onClick={() => setOpenEditProfile(true)}
+              className="text-black underline font-medium hover:underline"
+            >
+              Edit Profile
             </button>
-          </div>
-
+          </div>{" "}
           <div className="grid grid-cols-3 gap-3 overflow-y-auto pr-2">
             {galleryImages.map((img, index) => (
               <div
@@ -189,6 +204,24 @@ const Profile = () => {
           </div>
         </div>
       </section>
+
+      <EditProfileModal
+        open={openEditProfile}
+        setOpen={setOpenEditProfile}
+        onSave={(data) => {
+          console.log("Save profile:", data);
+          setOpenEditProfile(false);
+          setOpenSuccess(true);
+          // TODO: Call API to update profile
+        }}
+      />
+
+      <SuccessModal
+        open={openSuccess}
+        setOpen={setOpenSuccess}
+        title="Profile Updated!"
+        message="Your profile has been updated successfully."
+      />
     </div>
   );
 };
