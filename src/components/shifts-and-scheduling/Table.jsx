@@ -1,11 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import CustomPagination from "@/components/common/CustomPagination";
 import { IoIosArrowForward } from "react-icons/io";
 import utils from "@/lib/utils";
+import ShiftDetails from "./ShiftDetails";
+import AddShiftAndScheduling from "./AddShiftAndScheduling";
+import DeleteShiftPopup from "./DeleteShiftPopup";
+import UpdateSuccessPopup from "./UpdateSuccessPopup";
 
 const Table = () => {
-  const events = [
+  const initialEvents = [
     {
       date: "2025-11-10",
       time: "07:00 PM - 01:00 AM",
@@ -16,6 +20,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-11",
@@ -24,6 +30,8 @@ const Table = () => {
       event: "Wedding Reception",
       bartender: null,
       status: "unfilled",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-12",
@@ -35,6 +43,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-13",
@@ -43,6 +53,8 @@ const Table = () => {
       event: "Night Club Event",
       bartender: null,
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-14",
@@ -54,6 +66,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-15",
@@ -65,6 +79,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-16",
@@ -73,6 +89,8 @@ const Table = () => {
       event: "Charity Gala",
       bartender: null,
       status: "unfilled",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-17",
@@ -84,6 +102,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-18",
@@ -95,6 +115,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-19",
@@ -103,6 +125,8 @@ const Table = () => {
       event: "Corporate Mixer",
       bartender: null,
       status: "unfilled",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-20",
@@ -114,6 +138,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-21",
@@ -122,6 +148,8 @@ const Table = () => {
       event: "Outdoor BBQ",
       bartender: null,
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-22",
@@ -133,6 +161,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-23",
@@ -144,6 +174,8 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "pending",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
     {
       date: "2025-11-24",
@@ -155,8 +187,17 @@ const Table = () => {
         profileImage: "/images/profile.png",
       },
       status: "confirmed",
+      instruction:
+        "The standard Lorem Ipsum passage, m ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     },
   ];
+
+  const events = initialEvents;
+
+  const [selected, setSelected] = useState(null); // {data, index}
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -173,6 +214,18 @@ const Table = () => {
 
   const onPageChange = (page) => {
     // handle pagination
+  };
+
+  const handleRowClick = (event, index) => {
+    setSelected({ data: event, index });
+    setDetailsOpen(true);
+  };
+
+  const handleDelete = () => {
+    // static mode: do not remove data, only close modals
+    setDeleteOpen(false);
+    setDetailsOpen(false);
+    setSelected(null);
   };
 
   return (
@@ -196,7 +249,11 @@ const Table = () => {
           </thead>
           <tbody>
             {events.map((event, index) => (
-              <tr key={index} className="border-b border-[#D4D4D4]">
+              <tr
+                key={index}
+                className="border-b border-[#D4D4D4] cursor-pointer"
+                onClick={() => handleRowClick(event, index)}
+              >
                 <td className="px-4 py-6">
                   {utils.formatDateWithName(event.date)}
                 </td>
@@ -222,7 +279,7 @@ const Table = () => {
                   {utils.capitalize(event.status)}
                 </td>
                 <td className="px-4 py-6">
-                  <div className="flex justify-center items-center cursor-pointer">
+                  <div className="flex justify-center items-center">
                     <IoIosArrowForward size={24} />
                   </div>
                 </td>
@@ -231,6 +288,33 @@ const Table = () => {
           </tbody>
         </table>
       </div>
+
+      <ShiftDetails
+        isOpen={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        data={selected ? selected.data : null}
+        onEditClick={() => {
+          setEditOpen(true);
+          setDetailsOpen(false);
+        }}
+        onDeleteClick={() => setDeleteOpen(true)}
+      />
+
+      {/* Edit/Add Shift modal (reused component) */}
+      <AddShiftAndScheduling
+        isOpen={editOpen}
+        onOpenChange={setEditOpen}
+        isEdit={true}
+        data={selected ? selected.data : null}
+        showTrigger={false}
+      />
+
+      {/* Delete confirmation for shift */}
+      <DeleteShiftPopup
+        isOpen={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        onDelete={handleDelete}
+      />
     </CustomPagination>
   );
 };

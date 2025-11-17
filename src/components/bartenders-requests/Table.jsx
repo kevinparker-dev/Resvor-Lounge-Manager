@@ -1,8 +1,38 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import RequestDetails from "./RequestDetails";
+import AddShiftAndScheduling from "../shifts-and-scheduling/AddShiftAndScheduling";
+import UpdateSuccessPopup from "../shifts-and-scheduling/UpdateSuccessPopup";
 
 const Table = () => {
+  const [selected, setSelected] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+
+  const handleRowClick = (req) => {
+    if (req.status.toLowerCase() === "pending") {
+      setSelected(req);
+      setDetailsOpen(true);
+    }
+  };
+
+  const handleReject = () => {
+    setDetailsOpen(false);
+    setSelected(null);
+  };
+
+  const handleAccept = () => {
+    setDetailsOpen(false);
+    setUpdateOpen(true);
+  };
+
+  const handleUpdateComplete = () => {
+    setUpdateOpen(false);
+    setSuccessOpen(true);
+  };
+
   const bartenderRequests = [
     {
       bartender: { name: "Alex Johnson", image: "/images/profile.png" },
@@ -117,7 +147,8 @@ const Table = () => {
           {bartenderRequests.map((req, index) => (
             <tr
               key={index}
-              className="border-b border-[#D4D4D4] hover:bg-gray-50"
+              className="border-b border-[#D4D4D4] hover:bg-gray-50 cursor-pointer"
+              onClick={() => handleRowClick(req)}
             >
               <td className="px-4 py-5">
                 <div className="flex items-center gap-3">
@@ -156,6 +187,25 @@ const Table = () => {
           ))}
         </tbody>
       </table>
+
+      <RequestDetails
+        isOpen={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        data={selected}
+        onReject={handleReject}
+        onAccept={handleAccept}
+      />
+
+      <AddShiftAndScheduling
+        isOpen={updateOpen}
+        onOpenChange={setUpdateOpen}
+        isEdit={true}
+        data={selected}
+        showTrigger={false}
+        onUpdateSubmit={handleUpdateComplete}
+      />
+
+      <UpdateSuccessPopup isOpen={successOpen} onOpenChange={setSuccessOpen} />
     </div>
   );
 };

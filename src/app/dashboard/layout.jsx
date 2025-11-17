@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }) {
       </div>
       <div className="py-6 pr-6 flex flex-col flex-1 h-full overflow-hidden">
         <Topbar />
-        <div className="w-full flex-1 flex flex-col gap-5 overflow-y-auto p-4 rounded-[10px]">
+        <div className="w-full flex-1 flex flex-col gap-5 overflow-y-auto py-4">
           {children}
         </div>
       </div>

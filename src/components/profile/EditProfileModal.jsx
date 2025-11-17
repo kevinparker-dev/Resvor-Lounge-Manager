@@ -140,7 +140,7 @@ const EditProfileModal = ({
               />
             </div>
 
-            {/* Highlight Specialization (Full Width) */}
+            {/* Highlight Specialization */}
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Highlight Specialization
@@ -155,7 +155,7 @@ const EditProfileModal = ({
             </div>
 
             {/* Business Location */}
-            <div>
+            <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Business Location
               </label>
@@ -163,20 +163,6 @@ const EditProfileModal = ({
                 type="text"
                 value={businessLocation}
                 onChange={(e) => setBusinessLocation(e.target.value)}
-                className="w-full px-3 py-2 rounded-md border border-gray-300"
-                placeholder="Enter your Specialization"
-              />
-            </div>
-
-            {/* Business Location 2 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Business Location
-              </label>
-              <input
-                type="text"
-                value={businessLocation2}
-                onChange={(e) => setBusinessLocation2(e.target.value)}
                 className="w-full px-3 py-2 rounded-md border border-gray-300"
                 placeholder="Enter your Specialization"
               />

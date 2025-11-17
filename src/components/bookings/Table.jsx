@@ -3,8 +3,10 @@ import React from "react";
 import CustomPagination from "@/components/common/CustomPagination";
 import utils from "@/lib/utils";
 import { IoIosArrowForward } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 const Table = () => {
+  const router = useRouter();
   const events = [
     {
       bookingId: "AD111515",
@@ -132,6 +134,10 @@ const Table = () => {
     // getAllEvents(page);
   };
 
+  const handleRowClick = (index) => {
+    router.push(`/dashboard/bookings/${index}`);
+  };
+
   return (
     <CustomPagination
       loading={false}
@@ -154,7 +160,11 @@ const Table = () => {
           </thead>
           <tbody className="mt-10">
             {events?.map((event, index) => (
-              <tr key={index} className="border-b border-[#D4D4D4]">
+              <tr
+                key={index}
+                onClick={() => handleRowClick(index)}
+                className="border-b border-[#D4D4D4] cursor-pointer hover:bg-gray-50 transition-all"
+              >
                 <td className="px-4 py-6">{event?.bookingId}</td>
                 <td className="px-4 py-6">
                   <div className="flex items-center gap-3">

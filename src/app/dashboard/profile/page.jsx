@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import EditProfileModal from "@/components/profile/EditProfileModal";
 import SuccessModal from "@/components/settings/modals/SuccessModal";
+import Edit from "@/components/icons/Edit";
+import Delete from "@/components/icons/sidebar/Delete";
 
 const Profile = () => {
   const [openEditProfile, setOpenEditProfile] = useState(false);
@@ -52,6 +54,10 @@ const Profile = () => {
     },
   ];
 
+  const handleAddNewImages = () => {
+    console.log("Add new images");
+  };
+
   return (
     <div className="w-full bg-gray-50 p-6 space-y-6 overflow-auto">
       {/* Business Details */}
@@ -60,9 +66,9 @@ const Profile = () => {
           <h2 className="text-xl font-semibold">Business Details</h2>
           <button
             onClick={() => setOpenEditProfile(true)}
-            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+            className="cursor-pointer"
           >
-            Edit
+            <Edit />
           </button>
         </div>
 
@@ -152,10 +158,10 @@ const Profile = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Gallery</h2>
             <button
-              onClick={() => setOpenEditProfile(true)}
-              className="text-black underline font-medium hover:underline"
+              onClick={handleAddNewImages}
+              className="text-black underline font-medium hover:underline cursor-pointer"
             >
-              Edit Profile
+              Add New Images
             </button>
           </div>{" "}
           <div className="grid grid-cols-3 gap-3 overflow-y-auto pr-2">
@@ -174,8 +180,8 @@ const Profile = () => {
         {/* Multiple Locations */}
         <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col h-[450px]">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Multiple Location</h2>
-            <button className="text-black underline  font-medium hover:underline">
+            <h2 className="text-xl font-semibold ">Multiple Location</h2>
+            <button className="text-black underline cursor-pointer font-medium hover:underline">
               Add New Location
             </button>
           </div>
@@ -184,19 +190,19 @@ const Profile = () => {
             {locations.map((loc, index) => (
               <div
                 key={index}
-                className="flex justify-between items-start border-b pb-3"
+                className="flex justify-between items-center border-b pb-3"
               >
                 <div>
                   <h3 className="font-medium text-sm">{loc.name}</h3>
                   <p className="text-gray-500 text-sm">{loc.address}</p>
                   <p className="text-gray-500 text-xs mt-1">{loc.hours}</p>
                 </div>
-                <div className="flex gap-2">
-                  <button className="text-gray-400 hover:text-blue-500">
-                    ✏️
+                <div className="flex gap-3 me-2">
+                  <button className="cursor-pointer">
+                    <Edit />
                   </button>
-                  <button className="text-gray-400 hover:text-red-500">
-                    🗑️
+                  <button className="text-red-500 cursor-pointer">
+                    <Delete />
                   </button>
                 </div>
               </div>

@@ -13,9 +13,23 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import AccountCreationPopup from "./AccountCreationPopup";
 import EmailSentPopUp from "./EmailSentPopUp";
+import ProfileUpdateModal from "./ProfileUpdateModal";
 import { Camera, Eye, EyeOff } from "lucide-react";
+import Edit2 from "../icons/Edit2";
 
-const AddBartenderForm = ({ isOpen, onOpenChange }) => {
+const AddBartenderForm = ({
+  isOpen,
+  onOpenChange,
+  data = null,
+  isEdit = false,
+  onUpdateSubmit,
+  showTrigger = true,
+}) => {
+  // Pass the data when open from edit to and set in form data state
+  // If isEdit is true call edit API else call Create API
+  console.log("data to edit", data);
+  console.log("Is to Edit: ", isEdit);
+
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -23,6 +37,7 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
   // Modal triggers
   const [emailPopup, setEmailPopup] = useState(false);
   const [accountPopup, setAccountPopup] = useState(false);
+  const [updateProfile, setUpdateProfile] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -37,6 +52,18 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
     setAccountPopup(true);
   };
 
+  const handleUpdateProfile = (e) => {
+    e.preventDefault();
+    // Call onUpdateSubmit if provided (for bartender requests flow)
+    if (isEdit && typeof onUpdateSubmit === "function") {
+      onUpdateSubmit();
+    } else {
+      // Otherwise use the normal flow (profile update popup)
+      onOpenChange(false);
+      setUpdateProfile(true);
+    }
+  };
+
   const handleSendMail = () => {
     console.log("Email sent to bartender");
     setAccountPopup(false);
@@ -46,16 +73,29 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogTrigger>
-          <Button className={"border-2 h-14 text-lg"}>Add New Bartender</Button>
-        </DialogTrigger>
+        {showTrigger && (
+          <DialogTrigger>
+            {isEdit ? (
+              <Button className={"w-14 h-14"}>
+                <Edit2 className="scale-150 cursor-pointer" />
+              </Button>
+            ) : (
+              <Button className={"border-2 h-14 text-lg"}>
+                Add New Bartender
+              </Button>
+            )}
+          </DialogTrigger>
+        )}
         <DialogContent>
           <DialogHeader>
             <DialogTitle className={"text-3xl font-bold"}>
-              Add New Bartender
+              {isEdit ? "Update Bartender" : "Add New Bartender"}
             </DialogTitle>
             <DialogDescription>
-              <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+              <form
+                onSubmit={isEdit ? handleUpdateProfile : handleSubmit}
+                className="mt-4 space-y-4"
+              >
                 <div className="flex gap-6 items-center">
                   <Label
                     htmlFor="profile"
@@ -109,6 +149,11 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
                 </div>
 
                 <div className="w-full flex flex-col gap-1">
+                  <Label className={"text-base text-black"}>Address</Label>
+                  <Input placeholder="Enter address" className={"h-14"} />
+                </div>
+
+                <div className="w-full flex flex-col gap-1">
                   <Label className={"text-base text-black"}>Password</Label>
                   <div className="relative">
                     <Input
@@ -156,7 +201,9 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
                   </div>
                 </div>
 
-                <Button className={"w-full h-14 text-lg"}>Save</Button>
+                <Button type="submit" className={"w-full h-14 text-lg text-white bg-blue-900 hover:bg-blue-800"}>
+                  {isEdit ? "Update" : "Save"}
+                </Button>
               </form>
             </DialogDescription>
           </DialogHeader>
@@ -172,6 +219,9 @@ const AddBartenderForm = ({ isOpen, onOpenChange }) => {
 
       {/* Email Sent  */}
       <EmailSentPopUp isOpen={emailPopup} onOpenChange={setEmailPopup} />
+
+      {/* Profile Update Success */}
+      <ProfileUpdateModal open={updateProfile} setOpen={setUpdateProfile} />
     </>
   );
 };

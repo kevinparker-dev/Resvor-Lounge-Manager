@@ -23,11 +23,20 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import ReviewPopup from "./ReviewPopup";
 import ConfirmPopup from "./ConfirmPopup";
+import UpdateSuccessPopup from "./UpdateSuccessPopup";
 
-const AddShiftAndScheduling = ({ isOpen, onOpenChange }) => {
+const AddShiftAndScheduling = ({
+  isOpen,
+  onOpenChange,
+  isEdit = false,
+  data = null,
+  showTrigger = true,
+  onUpdateSubmit,
+}) => {
   // Modal triggers
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [reviewPopup, setReviewPopup] = useState(false);
+  const [updatedOpen, setUpdatedOpen] = useState(false);
 
   const bartenders = [
     "Jake Thompson",
@@ -63,6 +72,18 @@ const AddShiftAndScheduling = ({ isOpen, onOpenChange }) => {
     setReviewPopup(true);
   };
 
+  const handleEdit = (e) => {
+    e.preventDefault();
+    onOpenChange(false);
+    // If onUpdateSubmit provided (from bartender requests), call it directly
+    if (typeof onUpdateSubmit === "function") {
+      onUpdateSubmit();
+    } else {
+      // Otherwise show the update success popup
+      setUpdatedOpen(true);
+    }
+  };
+
   const handleConfirm = () => {
     setReviewPopup(false);
     setConfirmPopup(true);
@@ -76,17 +97,19 @@ const AddShiftAndScheduling = ({ isOpen, onOpenChange }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogTrigger>
-          <Button className={"border-2 h-14 text-lg"}>Add New Shift</Button>
-        </DialogTrigger>
+        {showTrigger ? (
+          <DialogTrigger>
+            <Button className={"border-2 h-14 text-lg"}>Add New Shift</Button>
+          </DialogTrigger>
+        ) : null}
         <DialogContent>
           <DialogHeader>
             <DialogTitle className={"text-3xl font-bold"}>
-              Add New Bartender
+              {isEdit ? "Edit Shift" : "Add New Shift"}
             </DialogTitle>
             <DialogDescription>
               <form
-                onSubmit={handleSubmit}
+                onSubmit={isEdit ? handleEdit : handleSubmit}
                 className="mt-4 grid grid-cols-2 gap-4"
               >
                 <div className="w-full flex flex-col gap-1">
@@ -138,7 +161,7 @@ const AddShiftAndScheduling = ({ isOpen, onOpenChange }) => {
                 </div>
 
                 <Button className={"col-span-2 w-full h-14 text-lg"}>
-                  Save
+                  {isEdit ? "Update" : "Save"}
                 </Button>
               </form>
             </DialogDescription>
@@ -157,6 +180,9 @@ const AddShiftAndScheduling = ({ isOpen, onOpenChange }) => {
 
       {/* Confirmation Popup  */}
       <ConfirmPopup isOpen={confirmPopup} onOpenChange={setConfirmPopup} />
+
+      {/* Confirm Update Modal */}
+      <UpdateSuccessPopup isOpen={updatedOpen} onOpenChange={setUpdatedOpen} />
     </>
   );
 };

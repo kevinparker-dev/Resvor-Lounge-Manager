@@ -1,10 +1,12 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import CustomPagination from "@/components/common/CustomPagination";
 import utils from "@/lib/utils";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Table = () => {
+  const router = useRouter();
   const events = [
     {
       eventName: "Summer Night Bash",
@@ -102,6 +104,10 @@ const Table = () => {
     // Pagination logic or API call
   };
 
+  const handleRowClick = (index) => {
+    router.push(`/dashboard/event-management/${index}`);
+  };
+
   return (
     <CustomPagination
       loading={false}
@@ -125,7 +131,11 @@ const Table = () => {
 
           <tbody className="mt-10">
             {events?.map((event, index) => (
-              <tr key={index} className="border-b border-[#D4D4D4]">
+              <tr
+                key={index}
+                className="border-b border-[#D4D4D4] cursor-pointer hover:bg-gray-50"
+                onClick={() => handleRowClick(index)}
+              >
                 <td className="px-4 py-6">{event?.eventName}</td>
                 <td className="px-4 py-6">
                   <div className="flex items-center gap-3">

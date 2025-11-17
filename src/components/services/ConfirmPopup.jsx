@@ -7,7 +7,12 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 
-const ConfirmPopup = ({ isOpen, onOpenChange }) => {
+const ConfirmPopup = ({ isOpen, onOpenChange, isEdit = false }) => {
+  const title = isEdit ? "Service Updated!" : "Service Added!";
+  const description = isEdit
+    ? "The service has been updated successfully."
+    : "The service has been added.";
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -19,11 +24,9 @@ const ConfirmPopup = ({ isOpen, onOpenChange }) => {
               </div>
 
               <h3 className="text-[#181818] text-2xl font-bold text-center">
-                Service Added!{" "}
+                {title}
               </h3>
-              <p className="text-[#565656] text-center">
-                The service has been added.
-              </p>
+              <p className="text-[#565656] text-center">{description}</p>
             </div>
           </DialogDescription>
         </DialogHeader>

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FiEdit2 } from "react-icons/fi";
+import Edit from "@/components/icons/Edit";
 
 const PersonalInfoModal = ({
   open,
@@ -53,13 +54,13 @@ const PersonalInfoModal = ({
               />
               <button
                 type="button"
-                className="absolute right-3 top-3 text-gray-500"
+                className="absolute right-3 top-3 text-gray-500 cursor-pointer"
                 onClick={() => {
                   if (onEditEmail) onEditEmail();
                 }}
                 aria-label="Edit email"
               >
-                <FiEdit2 />
+                <Edit />
               </button>
             </div>
           </div>
@@ -74,13 +75,13 @@ const PersonalInfoModal = ({
               />
               <button
                 type="button"
-                className="absolute right-3 top-3 text-gray-500"
+                className="absolute right-3 top-3 text-gray-500 cursor-pointer"
                 onClick={() => {
                   if (onEditPhone) onEditPhone();
                 }}
                 aria-label="Edit phone"
               >
-                <FiEdit2 />
+                <Edit />
               </button>
             </div>
           </div>

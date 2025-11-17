@@ -1,8 +1,10 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Table = () => {
+  const router = useRouter();
   const bartenders = [
     {
       bartenderName: "John Doe",
@@ -66,6 +68,10 @@ const Table = () => {
     },
   ];
 
+  const handleGoToDetailsPage = (id) => {
+    router.push(`/dashboard/bartenders/${id}`);
+  };
+
   return (
     <div className="bg-white rounded-xl overflow-y-auto">
       <table className="w-full">
@@ -80,7 +86,11 @@ const Table = () => {
         </thead>
         <tbody>
           {bartenders.map((bartender, index) => (
-            <tr key={index} className="border-b border-[#D4D4D4]">
+            <tr
+              onClick={() => handleGoToDetailsPage(index)}
+              key={index}
+              className="border-b border-[#D4D4D4] cursor-pointer"
+            >
               <td className="px-4 py-6">
                 <div className="flex items-center gap-3">
                   <div
